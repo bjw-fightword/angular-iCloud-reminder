@@ -1,0 +1,83 @@
+body{
+	margin: 0;
+}
+*{cursor:default;
+	list-style: none;
+}
+
+ .new-list ul li{
+ 	height: 44px;
+	border-bottom: 1px solid #333;
+	list-style: none;
+	
+	line-height: 44px;
+} 
+ .new-list ul input{
+ 	border: none;
+ 	font-size: 17px;
+ 	background: none;
+ 	color: #fff;outline: none;
+ }
+.new-list li span:first-child{
+	display: inline-block;
+	padding: 8px;
+	border-radius: 50%;
+	margin-left: 12px;
+	margin-right: 12px;
+}
+
+
+.red{
+	background: red;
+	color:red;
+}
+.blue{
+	background: blue;
+	color: blue;
+}
+.yellow{
+	background: yellow;
+	color:yellow;
+}
+.green{
+	background: green;
+	color:green;
+}
+.pink{
+	background: pink;
+	color:pink;
+}
+.purple{
+	background: purple;
+	color:purple;
+}
+.orange{
+	background: orange;color:orange;
+}
+.brow{
+	background: #ccc;color:#ccc;
+}
+.active{
+	background: rgb(45, 45, 43);
+}
+.new-priject li{
+	height: 52px;
+	border-top:1px solid black;
+	border-bottom:1px solid black;
+	background: #999;
+	margin-top: -1px;
+}
+.new-priject li input{
+	border: none;
+	background: none;
+	line-height: 52px;
+	outline: none;
+}
+.yundain{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin-right: 2px;
+	border-radius: 50%;
+
+}
