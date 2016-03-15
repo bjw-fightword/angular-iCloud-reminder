@@ -1,97 +1,78 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="remider">
+<html lang="en" ng-app="reminder">
 <head>
 	<meta charset="UTF-8">
 	<title>iCloud</title>
-	<script src="js/angular.js"></script>
-	<script src="js/remider.js"></script>
-
 	<link rel="stylesheet" href="css/index.css">
-	<link rel="stylesheet" href="./css/remied.css">
+	<script src="js/angular.js"></script>
+	<script src="js/index.js"></script>	
 </head>
-<body ng-controller="rdCtrl">
-	<div class="iCloud">
-		<div class="left">
-			<div class="left-list">
-				<div class="list-top">
-					<div class="list-top-left"></div>
-					<div class="list-top-right"ng-click="addshijian()"></div>
-				</div>
-				<div class="list-bottom">
-					<div class="bottom-box">
-						<div class="watch"ng-class="{active:clistindex==$index}">
-							<div class="watch-content">
-								<div class="watch-icon"></div>
-								<label class="title">已计划</label>
-							</div>
-						</div>
-					</div>
-					<div class="new-list">
-						<ul class="new-list-content">
-							<li ng-repeat="value in shijieliebiao track by $index" ng-click="showshijian($index)"ng-class="{active:clistindex==$index}">
-								<span ng-class='value.color'></span>
-								<input type="text"ng-model="value.name"ng-blur="save()">
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
+<body ng-controller="ctrl">
+	<div class="list">
+		<div class="title">
+			<div class="icloud"></div>
+			<div class="plus" title="新建提醒列表" ng-click="add()"></div>
 		</div>
-		<div class="right">
-			<div class="right-box">
-				<div class="right-top">
-					<div class="search">
-						<div class="search-right">
-							<!-- <div class="search-text">搜索所有提醒</div> -->
-							<input class="search-text"type="text"value="搜索所有提醒">
-							 <input type="text"ng-model="value.name"ng-blur="save()">
-							 <input type="text"ng-model="shijieliebiao[clistindex].name"ng-blur="save()"> 
-							  <button ng-click="deletItem()">删除</button>
-							 <span ng-repeat="value in colors" class="yundain"ng-class="value"ng-click="shijieliebiao[clistindex].color=value"></span> 
-						</div>
-						<div class="search-left">
-							<div class="search-logo"></div>
-						</div>
-					</div>
+		<div class="planbox">
+			<i class="plan"></i>
+			<label class="plantit">已计划</label>		</div>
+		<ul>
+			<li class="planbox" ng-repeat="value in lists track by $index" ng-click="event($index)" ng-class="{focus:currentIndex == $index}">
+				<div class="colors {{value.color}}"></div>
+				<input type="text" class="listscon" ng-model='value.name' ng-blur="save()">
+			</li>
+		</ul>
+	</div>
+	<div class="reminder">
+		<div class="search">
+			<div class="searchimg"></div>
+			<div class="searchIn">搜索所有提醒</div>
+		</div>
+		<h3 ng-class='currentEvent.color'>{{currentEvent.name}}
+		</h3>
+		<label class='selector {{currentEvent.color}}' ng-show="currentEvent.name != undefined" ng-click="sele()">选项</label>
+		<ul class="finishedEvent">
+			<li>共：{{lists[currentIndex].items.length}}项</li>
+			<li ng-repeat="value in lists[currentIndex].items track by $index" ng-show="value.isDone" class='finished' ng-click="hideShow($index)">
+				<input type="text" ng-model="value.name" ng-blur="save()">
+				<div ng-show='value.hs'>
+					<div class="li{{currentEvent.color}} liTop"></div>
+					<div class="li{{currentEvent.color}} liDown"></div>
+					<div class="li{{currentEvent.color}} liCon"></div>
 				</div>
-				<div class="right-middle">
-					<div class="right-box">
-						<div class="right-newlist">
-							<div class="right-newlist-text">{{shijieliebiao[clistindex].name}}</div>
-							<div class="R-newlist-xuanxiang">
-								<label >选项</label>
-							</div>
-						</div>
-					</div>
-					<div class="right-bottom">
-						<div class="yiwancheng">
-							<div class="done-item">已完成:
-								<span>{{shijieliebiao[clistindex].items.length}}</span>
-							</div>
-						</div>
-						<div class="new-priject">
-							<ul>
-								<li ng-repeat="value in shijieliebiao[clistindex].items track by $index"ng-show='value.isDone'>
-									<span ng-click="value.isDone=false;save()">{{value.isDone}}</span>
-									<input type="text"ng-model="value.name"ng-blur="save()">
-									<!-- <button ng-click="deleteTodo($index)">删除</button> -->
-								</li>
-							</ul>
-							<hr>
-							<ul>
-								<li ng-repeat="value in shijieliebiao[clistindex].items track by $index"ng-hide="value.isDone">
-									<span ng-click="value.isDone=true;save()" class="circle">{{value.isDone}}</span>
-									<input type="text"ng-model="value.name"ng-blur="save()">
-									 <button ng-click="deleteTodo($index)"class="shanchu">删除</button> 
-								</li>
-							</ul>
-							<div class="new-item"ng-click="addTodo()">新项目...
-							</div>
-						</div>
-					</div>
+				<div ng-click="value.isDone = false;haveDone($index);save()" class="do do{{currentEvent.color}}"></div>
+				<label class="do{{currentEvent.color}} del" ng-click="delEvent($index)" ng-show='value.hs'>删除</label>
+			</li>
+		</ul>
+		<ul class="noFinishedEvent">
+			<li ng-repeat="value in lists[currentIndex].items track by $index" ng-hide="value.isDone" ng-click="hideShow($index)">
+				<input type="text" ng-model="value.name" ng-blur="save()">
+				<div ng-show='value.hs'>
+					<div class="li{{currentEvent.color}} liTop"></div>
+					<div class="li{{currentEvent.color}} liDown"></div>
+					<div class="li{{currentEvent.color}} liCon"></div>
 				</div>
-			</div>
+				<div ng-click="value.isDone = true;haveDone($index);save()" class="doOrNo doOrNo{{currentEvent.color}}"></div>
+				<label class="do{{currentEvent.color}} del" ng-click="delEvent($index)" ng-show='value.hs'>删除</label>
+			</li>
+			<li class="newEvent" ng-click="willDo()">新项目...</li>
+		</ul>
+	</div>
+	<div class="selectorShow" ng-show="flag">
+		<input type="text" class="selectorText  {{currentEvent.color}}" ng-model='currentEvent.name' ng-blur="save()">
+		<span>列表颜色</span>
+		<ul>
+			<li  ng-repeat="value in color">
+				<em id="{{value}}" ng-click="lists[currentIndex].color = value"></em>
+			</li>
+		</ul>
+		<div class="button">
+			<span id="del" ng-click="flag = !flag;del()">删除</span>
+			<span id="back" ng-click="flag = !flag">取消</span>
+			<span id="shu"></span>
+			<span id="fin" ng-click="flag = !flag;save()">完成</span>
 		</div>
 	</div>
+
 </body>
 </html>
